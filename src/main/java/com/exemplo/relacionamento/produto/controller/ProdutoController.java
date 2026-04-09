@@ -5,6 +5,7 @@ import com.exemplo.relacionamento.produto.dto.ProdutoResponseDTO;
 import com.exemplo.relacionamento.produto.entity.Produto;
 import com.exemplo.relacionamento.produto.service.ProdutoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,38 +18,38 @@ public class ProdutoController {
     private final ProdutoService service;
 
     @PostMapping
-    public ProdutoResponseDTO salvar(@RequestBody ProdutoRequestDTO dto) {
-        return service.salvar(dto);
+    public ResponseEntity<ProdutoResponseDTO> salvar(@RequestBody ProdutoRequestDTO dto){
+        return ResponseEntity.status(201).body(service.salvar(dto));
     }
 
     @GetMapping
-    public List<Produto> listar() {
-        return service.listar();
+    public ResponseEntity<List<Produto>>  listar(){
+        return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
-    public Produto buscar(@PathVariable Long id) {
-        return service.buscar(id);
+    public ResponseEntity<Produto> buscar(@PathVariable Long id){
+        return ResponseEntity.ok(service.buscar(id));
     }
 
     @GetMapping("/categoria/{id}")
-    public List<Produto> porCategoria(@PathVariable Long id) {
-        return service.buscarPorCategoria(id);
+    public ResponseEntity<List<Produto>> porCategoria(@PathVariable Long id){
+        return ResponseEntity.ok(service.buscarPorCategoria(id));
     }
 
     @GetMapping("/nome")
-    public List<Produto> porNome(@RequestParam String nome) {
-        return service.buscarPorNome(nome);
+    public ResponseEntity<List<Produto>> porNome(@RequestParam String nome){
+      return ResponseEntity.ok(service.buscarPorNome(nome));
     }
 
     @GetMapping("/categoria-nome")
-    public List<Produto> porNomeCategoria(@RequestParam String nome) {
-        return service.buscarPorNomeCategoria(nome);
+    public ResponseEntity <List<Produto>> porNomeCategoria(@RequestBody String nome){
+        return ResponseEntity.ok(service.buscarPorNomeCategoria(nome));
     }
 
     @GetMapping("/filtro")
-    public Produto filtro(@RequestParam Long id,
-                          @RequestParam String nome) {
-        return service.buscarPorIdENome(id, nome);
+    public ResponseEntity <Produto> filtro(@RequestParam Long id,
+                                           @RequestParam String nome){
+    return ResponseEntity.ok(service.buscarPorIdENome(id,nome));
     }
 }

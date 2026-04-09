@@ -1,9 +1,10 @@
 package com.exemplo.relacionamento.projeto.controller;
 
 import com.exemplo.relacionamento.projeto.dto.TarefaRequestDTO;
-import com.exemplo.relacionamento.projeto.dto.TarefaResponceDTO;
+import com.exemplo.relacionamento.projeto.dto.TarefaResponseDTO;
 import com.exemplo.relacionamento.projeto.service.TarefaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,20 +16,23 @@ public class TarefaController {
     private final TarefaService service;
 
     @PostMapping
-    public TarefaResponceDTO salvar (@RequestBody TarefaRequestDTO dto){
-        return service.salvar(dto);
+    public ResponseEntity<TarefaResponseDTO> salvar(@RequestBody TarefaRequestDTO dto) {
+        return ResponseEntity.status(201).body(service.salvar(dto));
     }
+
     @GetMapping
-    public List<TarefaResponceDTO> listar(){
-        return service.listar();
+    public ResponseEntity<List<TarefaResponseDTO>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
+
     @GetMapping("/projeto/{id}")
-    public List<TarefaResponceDTO> porProjeto(@PathVariable Long id){
-        return service.buscarPorProjeto(id);
+    public ResponseEntity<List<TarefaResponseDTO>> porProjeto(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorProjeto(id));
     }
+
     @GetMapping("/filtro")
-    public TarefaResponceDTO filtro(@RequestParam Long id,
-                                    @RequestParam String titulo){
-        return service.buscarPorIdETitulo(id,titulo);
+    public ResponseEntity<TarefaResponseDTO> filtro(@RequestParam Long id,
+                                                    @RequestParam String titulo) {
+        return ResponseEntity.ok(service.buscarPorIdETitulo(id, titulo));
     }
 }

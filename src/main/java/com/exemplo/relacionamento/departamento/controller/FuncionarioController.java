@@ -5,6 +5,7 @@ import com.exemplo.relacionamento.departamento.dto.FuncionarioResponseDTO;
 import com.exemplo.relacionamento.departamento.entity.Funcionario;
 import com.exemplo.relacionamento.departamento.service.FuncionarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,33 +18,35 @@ public class FuncionarioController {
     private final FuncionarioService service;
 
     @PostMapping
-    public FuncionarioResponseDTO salvar(@RequestBody FuncionarioRequestDTO dto) {
-        return service.salvar(dto);
+    public ResponseEntity<FuncionarioResponseDTO> salvar(@RequestBody FuncionarioRequestDTO dto) {
+
+        return ResponseEntity
+                .status(201)
+                .body(service.salvar(dto));
     }
 
     @GetMapping
-    public List<Funcionario> listar() {
-        return service.listar();
+    public ResponseEntity<List<Funcionario>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
-    public Funcionario buscar(@PathVariable Long id) {
-        return service.buscar(id);
+    public ResponseEntity<Funcionario> buscar(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscar(id));
     }
 
     @GetMapping("/departamento/{id}")
-    public List<Funcionario> porDepartamento(@PathVariable Long id) {
-        return service.buscarPorDepartamento(id);
+    public ResponseEntity<List<Funcionario>> porDepartamento(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorDepartamento(id));
     }
 
     @GetMapping("/nome")
-    public List<Funcionario> porNome(@RequestParam String nome) {
-        return service.buscarPorNome(nome);
+    public ResponseEntity<List<Funcionario>> porNome(@RequestParam String nome) {
+        return ResponseEntity.ok(service.buscarPorNome(nome));
     }
 
     @GetMapping("/filtro")
-    public Funcionario porIdENome(@RequestParam Long id,
-                                  @RequestParam String nome) {
-        return service.buscarPorIdENome(id, nome);
-    }
-}
+    public ResponseEntity<Funcionario> filtro(@RequestParam Long id,
+                                              @RequestParam String nome) {
+        return ResponseEntity.ok(service.buscarPorIdENome(id, nome));
+    }}

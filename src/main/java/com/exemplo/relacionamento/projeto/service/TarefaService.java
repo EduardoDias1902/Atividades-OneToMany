@@ -1,7 +1,7 @@
 package com.exemplo.relacionamento.projeto.service;
 
 import com.exemplo.relacionamento.projeto.dto.TarefaRequestDTO;
-import com.exemplo.relacionamento.projeto.dto.TarefaResponceDTO;
+import com.exemplo.relacionamento.projeto.dto.TarefaResponseDTO;
 import com.exemplo.relacionamento.projeto.entity.Projeto;
 import com.exemplo.relacionamento.projeto.entity.Tarefa;
 import com.exemplo.relacionamento.projeto.repository.ProjetoRepository;
@@ -18,7 +18,7 @@ public class TarefaService {
     private final TarefaRepository tarefaRepository;
     private final ProjetoRepository projetoRepository;
 
-    public TarefaResponceDTO salvar(TarefaRequestDTO dto){
+    public TarefaResponseDTO salvar(TarefaRequestDTO dto){
         Projeto projeto = projetoRepository.findById(dto.getProjetoId())
                 .orElseThrow(() -> new RuntimeException("Projeto não existe"));
 
@@ -29,17 +29,17 @@ public class TarefaService {
 
         tarefaRepository.save(tarefa);
 
-        return new TarefaResponceDTO(
+        return new TarefaResponseDTO(
                 tarefa.getId(),
                 tarefa.getTitulo(),
                 tarefa.getStatus(),
                 projeto.getNome()
         );
     }
-    public List<TarefaResponceDTO> listar(){
+    public List<TarefaResponseDTO> listar(){
         return tarefaRepository.findAll()
                 .stream()
-                .map(tarefa -> new TarefaResponceDTO(
+                .map(tarefa -> new TarefaResponseDTO(
                         tarefa.getId(),
                         tarefa.getTitulo(),
                         tarefa.getStatus(),
@@ -47,10 +47,10 @@ public class TarefaService {
                 ))
                 .collect(Collectors.toList());
     }
-    public List<TarefaResponceDTO> buscarPorProjeto(Long id){
+    public List<TarefaResponseDTO> buscarPorProjeto(Long id){
         return tarefaRepository.findByProjetoId(id)
                 .stream()
-                .map(tarefa -> new TarefaResponceDTO(
+                .map(tarefa -> new TarefaResponseDTO(
                         tarefa.getId(),
                         tarefa.getTitulo(),
                         tarefa.getStatus(),
@@ -58,11 +58,11 @@ public class TarefaService {
                 ))
                 .collect(Collectors.toList());
     }
-    public TarefaResponceDTO buscarPorIdETitulo(Long id,String titulo){
+    public TarefaResponseDTO buscarPorIdETitulo(Long id, String titulo){
         Tarefa tarefa = tarefaRepository.findByIdAndTitulo(id,titulo)
                 .orElseThrow();
 
-        return new TarefaResponceDTO(
+        return new TarefaResponseDTO(
                 tarefa.getId(),
                 tarefa.getTitulo(),
                 tarefa.getStatus(),
